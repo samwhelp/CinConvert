@@ -7,9 +7,16 @@
 #include <cstdint>
 #include <cstring>
 #include <string>
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
 
 typedef std::vector<std::string> FileList;
 
+/*
+//原來的版本
 int ReadSettingFile(FileList& fs1,FileList& fs2)
 {
 	FILE *fp;
@@ -44,6 +51,122 @@ int ReadSettingFile(FileList& fs1,FileList& fs2)
 	fclose(fp);
 	return 0;
 }
+*/
+
+/*
+//寫死版本
+int ReadSettingFile(FileList& fs1,FileList& fs2)
+{
+	fs1.push_back("data/CNS_phonetic.txt");
+	fs1.push_back("data/Other_phonetic.txt");
+
+	fs2.push_back("data/CNS2UNICODE_Unicode_BMP.txt");
+	fs2.push_back("data/CNS2UNICODE_Unicode_2.txt");
+	fs2.push_back("data/CNS2UNICODE_Unicode_15.txt");
+	return 0;
+
+}
+*/
+
+// 目前版本
+int ReadSettingFile(FileList& fs1,FileList& fs2)
+{
+
+	//https://cg2010studio.com/2012/04/15/c-%E8%AE%80%E5%8F%96%E6%AA%94%E6%A1%88-read-file/
+	//http://en.cppreference.com/w/cpp/io/basic_fstream/open
+	//http://en.cppreference.com/w/cpp/string/basic_string/getline
+	//http://www.cplusplus.com/forum/beginner/11304/
+	//http://www.cplusplus.com/doc/tutorial/basic_io/
+
+	string line;
+	string file_name = "setting.txt";
+	fstream fs;
+	fs.open(file_name);
+
+	if (!fs.is_open()) {
+		cout << "not open" << endl;
+		fs.clear();
+        fs.open(file_name, ios::out); //Create file.
+        fs.close();
+        fs.open(file_name);
+	}
+
+	int flag = 0;
+	while (!fs.eof()) {
+
+		getline(fs, line);
+
+		////line.erase(0, s.find_first_not_of(" \n\r\t")); //ltrim //just note
+		line.erase(line.find_last_not_of(" \n\r\t")+1); //rtirm //http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+
+		if (line == "#CNS-phonetic:") {
+			flag = 1;
+		} else if (line == "#CNS-unicode:") {
+			flag = 2;
+		} else {
+			if (line.size() == 0) {
+				continue;
+			}
+			if (flag == 1) {
+				fs1.push_back(line);
+			} else if(flag == 2) {
+				fs2.push_back(line);
+			}
+		}
+
+        //cout << line << endl;
+    }
+
+	return 0;
+}
+
+/*
+//修改後的版本
+int ReadSettingFile(FileList& fs1,FileList& fs2)
+{
+	FILE *fp;
+	char ch;
+	int f=0;
+	std::string ss;
+	fp=fopen("setting.txt","r");
+	if(fp==NULL)
+		return -1;
+	do
+	{
+		ss="";
+
+		//for(ch=fgetc(fp);ch!='\n' && ch!=EOF;ch=fgetc(fp))
+		//	ss+=ch;
+		// 修改如下
+		for(ch=fgetc(fp);ch!='\n' && ch!=EOF;ch=fgetc(fp)) {
+			if (ch == '\r') {
+				continue;
+			}
+			ss+=ch;
+		}
+
+		if(ss.size()>0)
+		{
+			if(ss=="#CNS-phonetic:")
+				f=1;
+			else if(ss=="#CNS-unicode:")
+				f=2;
+			else
+			{
+				if(f==1)
+					fs1.push_back(ss);
+				else if(f==2)
+					fs2.push_back(ss);
+				else
+					return -2;
+			}
+		}
+	}while(ch!=EOF);
+	fclose(fp);
+	return 0;
+}
+*/
+
 
 int main()
 {
@@ -66,7 +189,7 @@ int main()
 	printf("[2]%d\n",fs2.size());
 	for(int i=0;i<fs2.size();++i)
 		printf("%s\n",fs2[i].c_str());
-	
+
 	const char *head_of_file="\
 %gen_inp\n\
 %ename english_name\n\
@@ -120,7 +243,7 @@ z ㄈ\n\
 ";
 	const char *end_of_file="%chardef end";
 	CnsUniTable CUT;
-	
+
 	int k=CUT.ReadFiles(fs2);
 	std::string err=CUT.GetErrorLog();
 	if(err.size()!=0)
@@ -139,7 +262,7 @@ z ㄈ\n\
 		printf("%X %X %X %s\n",CPT[k].phon,CPT[k].cns,CPT[k].uni,CPT[k].phon_str(buf));
 	}*/
 	stable_sort(CPT.begin(),CPT.end(),CnsPhonCmp_PU);
-	
+
 	for(int i=0,k=0,r,n=CPT.size();k<n;k+=r)
 	{//i:寫入位置,k:讀取位置
 		for(r=k+1;r<n && CPT[r].uni==CPT[k].uni && CPT[r].phon==CPT[k].phon;++r);

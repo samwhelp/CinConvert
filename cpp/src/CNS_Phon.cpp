@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstdint>
 #include <string>
-#include "CNS_phon.h"
+#include "CNS_Phon.h"
 #include "futf8.h"
 #include "CNS_Uni.h"
 
@@ -29,12 +29,12 @@ int GetCinFile(std::vector<CnsPhonData>& CPT,CnsUniTable& CUT,std::vector<std::s
 			fclose(src[j]);
 		return -1;
 	}
-	
+
 	int i,k,f,shift;
 	uint32_t uc,cns,uni;
 	uint32_t phon;
 	std::vector<uint32_t> str;
-	
+
 	k=0;
 	for(int j=0,m=src.size();j<m;++j)
 	{
@@ -42,7 +42,7 @@ int GetCinFile(std::vector<CnsPhonData>& CPT,CnsUniTable& CUT,std::vector<std::s
 		fseek(src[j],0,SEEK_SET);
 	}
 	CPT.reserve(k);
-	
+
 	//printf("{%d}",src.size);
 	for(int j=0,m=src.size();j<m;++j)
 	{

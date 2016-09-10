@@ -1,0 +1,12 @@
+data/CNS_phonetic.txt
+data/CNS2UNICODE_Unicode_2.txt
+data/CNS2UNICODE_Unicode_15.txt
+data/CNS2UNICODE_Unicode_BMP.txt
+Open_Data
+Open_Data.zip
+phonetic.cin
+log.txt
+CinConvert.exe
+src/obj/CNS_Phon.o
+src/obj/CNS_Uni.o
+src/obj/futf8.o
