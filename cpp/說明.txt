@@ -1,0 +1,15 @@
+【程式功能】
+(1)讀取「CNS碼-注音」映射文件與「CNS碼-unicode」映射文件，並產生phonetic.cin。
+(2)自動檢查「CNS碼-注音」映射文件，發現無法轉換的內容，會自動記錄在log.txt中。
+
+【使用說明】
+(1)將全字庫的相關檔案 "CNS_phonetic.txt"、"CNS2UNICODE_Unicode BMP.txt"、"CNS2UNICODE_Unicode 2.txt"、"CNS2UNICODE_Unicode 15.txt" 放到data資料夾中。
+(2)點兩下執行CinConvert.exe產生phonetic.cin與log.txt。
+(3)用純文字編輯軟體打開phonetic.cin，為您的輸入法命名(%ename與%cname)
+
+※如果希望修改匯入的檔案名稱或路徑，用筆記本修改setting.txt。
+※本程式不支援中文路徑或檔名。
+
+【資料夾說明】
+data:預設放置資料來源檔案的位置，可以從setting.txt修改。
+src:放置程式原始碼的資料夾。若不放心執行檔是否夾帶病毒，可自行檢閱編譯。

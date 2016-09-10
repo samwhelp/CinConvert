@@ -1,0 +1,8 @@
+#CNS-phonetic:
+data/CNS_phonetic.txt
+data/other_phonetic.txt
+
+#CNS-unicode:
+data/CNS2UNICODE_Unicode BMP.txt
+data/CNS2UNICODE_Unicode 2.txt
+data/CNS2UNICODE_Unicode 15.txt
