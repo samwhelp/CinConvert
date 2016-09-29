@@ -101,4 +101,4 @@ $ wc -l CnsPhonetic.cin
 
 ## 相關專案
 
-* [prototype-cns11643-to-cin-gjs](https://github.com/samwhelp/prototype-cns11643-to-cin-gjs.git)
+* [util-cns11643-to-cin-gjs](https://github.com/samwhelp/util-cns11643-to-cin-gjs.git)
